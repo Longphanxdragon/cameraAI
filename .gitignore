@@ -1,0 +1,31 @@
+# Môi trường ảo Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Dataset và model (quá nặng để push lên Git, dùng Git LFS hoặc upload riêng)
+data/
+models/
+chart2code-model/
+*.safetensors
+*.bin
+*.pt
+*.pth
+
+# File tạm
+*.log
+.DS_Store
+
+# Visual Studio / IDE
+.vs/
+*.suo
+*.user
+.idea/
+
+# SQLite database (dữ liệu runtime, không push lên git)
+*.db
+*.sqlite
+
+# Environment variables (chứa secret key, không push!)
+.env
