@@ -3,697 +3,319 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CamVision AI — Project Hub</title>
+  <title>CamVision AI — Báo cáo dự án</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f9f9f8;
+      color: #37352f;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+    .page {
+      max-width: 780px;
+      margin: 0 auto;
+      background: #fff;
+      min-height: 100vh;
+      padding: 64px 80px 120px;
+    }
+    @media(max-width:640px){ .page { padding: 32px 24px 80px; } }
 
-    :root {
-      --text:     #37352f;
-      --muted:    #9b9a97;
-      --border:   #e9e9e7;
-      --hover:    #f1f1ef;
-      --blue:     #2383e2;
-      --green:    #0f7b6c;
-      --orange:   #d9730d;
-      --red:      #e03e3e;
-      --purple:   #6940a5;
-      --bg:       #ffffff;
-      --sidebar:  #fbfbfa;
-      --tag-blue:   #dbeafe;
-      --tag-green:  #dcfce7;
-      --tag-orange: #ffedd5;
-      --tag-red:    #fee2e2;
-      --tag-purple: #f3e8ff;
-      --tag-gray:   #f1f1ef;
+    /* ── Header ── */
+    .emoji { font-size: 56px; margin-bottom: 16px; }
+    h1 { font-size: 32px; font-weight: 700; margin-bottom: 6px; }
+    .tagline { color: #9b9a97; font-size: 15px; margin-bottom: 8px; }
+    .updated { font-size: 13px; color: #b5b4b0; margin-bottom: 40px; }
+
+    /* ── Info table ── */
+    .info-table { width: 100%; border-collapse: collapse; margin-bottom: 40px; }
+    .info-table tr { border-bottom: 1px solid #e9e9e7; }
+    .info-table tr:last-child { border-bottom: none; }
+    .info-table td { padding: 9px 0; font-size: 14px; vertical-align: top; }
+    .info-table td:first-child { color: #9b9a97; width: 160px; }
+    .tag {
+      display: inline-block; padding: 2px 10px; border-radius: 4px;
+      font-size: 13px; font-weight: 500;
+    }
+    .tag-yellow { background: #fef3c7; color: #92400e; }
+    .tag-blue   { background: #dbeafe; color: #1e40af; }
+
+    /* ── Section heading ── */
+    h2 {
+      font-size: 18px; font-weight: 700;
+      margin: 40px 0 14px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #e9e9e7;
+      display: flex; align-items: center; gap: 8px;
     }
 
-    body {
-      font-family: 'Inter', -apple-system, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      font-size: 15px;
+    /* ── Link cards ── */
+    .links { display: flex; flex-direction: column; gap: 4px; }
+    .link-card {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 12px; border-radius: 8px;
+      border: 1px solid #e9e9e7;
+      text-decoration: none; color: #37352f;
+      transition: background 0.12s, border-color 0.12s;
+    }
+    .link-card:hover { background: #f1f1ef; border-color: #d0d0cc; }
+    .link-card .icon { font-size: 20px; flex-shrink: 0; }
+    .link-card .info { flex: 1; }
+    .link-card .name { font-weight: 600; font-size: 14px; }
+    .link-card .url  { font-size: 12px; color: #9b9a97; margin-top: 1px; }
+    .link-card .arr  { color: #c5c5c0; font-size: 14px; flex-shrink: 0; }
+    .link-card:hover .arr { color: #37352f; }
+    .link-pending {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 12px; border-radius: 8px;
+      border: 1px dashed #d0d0cc;
+      color: #9b9a97; font-size: 14px;
+    }
+
+    /* ── Progress bar ── */
+    .progress-wrap { margin-bottom: 6px; }
+    .progress-label {
+      display: flex; justify-content: space-between;
+      font-size: 13px; color: #9b9a97; margin-bottom: 6px;
+    }
+    .bar-bg { height: 8px; background: #e9e9e7; border-radius: 99px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 99px; background: #0f7b6c; }
+
+    /* ── Week table ── */
+    .week-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .week-table th {
+      text-align: left; padding: 8px 12px;
+      font-size: 12px; font-weight: 600; color: #9b9a97;
+      text-transform: uppercase; letter-spacing: 0.4px;
+      background: #f9f9f8; border-bottom: 2px solid #e9e9e7;
+    }
+    .week-table td { padding: 10px 12px; border-bottom: 1px solid #f1f1ef; vertical-align: top; }
+    .week-table tr:last-child td { border-bottom: none; }
+    .week-table tr:hover td { background: #fafafa; }
+    .wnum {
+      font-weight: 700; font-size: 13px;
+      padding: 2px 8px; border-radius: 4px;
+      display: inline-block;
+    }
+    .status {
+      font-size: 12px; font-weight: 600;
+      padding: 3px 8px; border-radius: 4px; white-space: nowrap;
+    }
+    .s-done     { background: #dcfce7; color: #15803d; }
+    .s-active   { background: #fef3c7; color: #92400e; }
+    .s-upcoming { background: #f1f1ef; color: #9b9a97; }
+    .deliverable { font-size: 13px; color: #64748b; font-style: italic; }
+
+    /* ── Stack ── */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 8px;
+    }
+    .stack-item {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; padding: 8px 10px;
+      border: 1px solid #e9e9e7; border-radius: 6px;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+    /* ── Note ── */
+    .note {
+      background: #f0f9ff; border-left: 3px solid #38bdf8;
+      border-radius: 0 6px 6px 0; padding: 12px 16px;
+      font-size: 13px; margin-top: 32px; color: #0369a1;
       line-height: 1.6;
     }
 
-    /* ── Layout ── */
-    .layout { display: flex; min-height: 100vh; }
-
-    /* ── Sidebar ── */
-    .sidebar {
-      width: 240px; flex-shrink: 0;
-      background: var(--sidebar);
-      border-right: 1px solid var(--border);
-      padding: 16px 8px;
-      position: sticky; top: 0; height: 100vh;
-      overflow-y: auto;
+    /* ── Footer ── */
+    footer {
+      margin-top: 60px; padding-top: 20px;
+      border-top: 1px solid #e9e9e7;
+      font-size: 12px; color: #b5b4b0; text-align: center;
     }
-    .sidebar-title {
-      font-size: 12px; font-weight: 600;
-      color: var(--muted); text-transform: uppercase;
-      letter-spacing: 0.5px; padding: 4px 8px; margin-bottom: 4px;
-    }
-    .sidebar-item {
-      display: flex; align-items: center; gap: 8px;
-      padding: 5px 8px; border-radius: 4px;
-      font-size: 14px; cursor: pointer;
-      color: var(--text); text-decoration: none;
-      transition: background 0.1s;
-    }
-    .sidebar-item:hover { background: var(--hover); }
-    .sidebar-item.active { background: var(--hover); font-weight: 500; }
-    .sidebar-icon { font-size: 16px; width: 20px; text-align: center; flex-shrink: 0; }
-    .sidebar-divider { height: 1px; background: var(--border); margin: 8px 0; }
-
-    /* ── Main ── */
-    .main { flex: 1; max-width: 860px; margin: 0 auto; padding: 60px 80px 120px; }
-
-    @media (max-width: 768px) {
-      .sidebar { display: none; }
-      .main { padding: 32px 24px 80px; }
-    }
-
-    /* ── Header ── */
-    .page-icon { font-size: 60px; margin-bottom: 16px; }
-    .page-title {
-      font-size: 36px; font-weight: 700;
-      color: var(--text); margin-bottom: 4px; line-height: 1.2;
-    }
-    .page-desc { color: var(--muted); font-size: 15px; margin-bottom: 32px; }
-
-    /* ── Properties (like Notion database) ── */
-    .props { margin-bottom: 40px; }
-    .prop-row {
-      display: flex; align-items: center;
-      padding: 6px 0; border-bottom: 1px solid var(--border);
-      gap: 0;
-    }
-    .prop-label {
-      width: 160px; flex-shrink: 0;
-      font-size: 14px; color: var(--muted);
-      display: flex; align-items: center; gap: 6px;
-    }
-    .prop-value { font-size: 14px; color: var(--text); flex: 1; }
-    .prop-value a { color: var(--blue); text-decoration: none; }
-    .prop-value a:hover { text-decoration: underline; }
-    .tag {
-      display: inline-flex; align-items: center;
-      padding: 2px 8px; border-radius: 4px;
-      font-size: 13px; font-weight: 500;
-    }
-    .tag-blue   { background: var(--tag-blue);   color: #1d4ed8; }
-    .tag-green  { background: var(--tag-green);  color: #15803d; }
-    .tag-orange { background: var(--tag-orange); color: #c2410c; }
-    .tag-gray   { background: var(--tag-gray);   color: var(--muted); }
-
-    /* ── Progress ── */
-    .progress-wrap { margin-bottom: 40px; }
-    .progress-label {
-      display: flex; justify-content: space-between;
-      font-size: 13px; color: var(--muted); margin-bottom: 6px;
-    }
-    .progress-bar-bg {
-      height: 6px; background: var(--border); border-radius: 99px; overflow: hidden;
-    }
-    .progress-bar-fill {
-      height: 100%; border-radius: 99px;
-      background: #0f7b6c;
-      transition: width 0.5s ease;
-    }
-
-    /* ── Divider ── */
-    hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
-
-    /* ── Heading ── */
-    h2 {
-      font-size: 20px; font-weight: 600;
-      margin-bottom: 12px; margin-top: 36px;
-      display: flex; align-items: center; gap: 8px;
-    }
-    h2:first-child { margin-top: 0; }
-    h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; color: var(--text); }
-
-    /* ── Link grid (Notion-style callout cards) ── */
-    .link-grid { display: flex; flex-direction: column; gap: 2px; margin-bottom: 8px; }
-    .link-row {
-      display: flex; align-items: center; gap: 10px;
-      padding: 8px 10px; border-radius: 6px;
-      text-decoration: none; color: var(--text);
-      transition: background 0.1s;
-      border: 1px solid transparent;
-    }
-    .link-row:hover { background: var(--hover); border-color: var(--border); }
-    .link-icon { font-size: 18px; width: 24px; text-align: center; flex-shrink: 0; }
-    .link-info { flex: 1; min-width: 0; }
-    .link-name { font-size: 14px; font-weight: 500; }
-    .link-url {
-      font-size: 12px; color: var(--muted);
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-    .link-arrow { color: var(--muted); font-size: 14px; flex-shrink: 0; }
-    .link-empty .link-url { color: #d4d4d0; font-style: italic; }
-    .link-empty .link-name { color: var(--muted); }
-
-    /* ── Timeline / Task list ── */
-    .week-block { margin-bottom: 8px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
-    .week-header {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 14px; cursor: pointer;
-      background: var(--sidebar);
-      transition: background 0.1s;
-      user-select: none;
-    }
-    .week-header:hover { background: var(--hover); }
-    .week-num-badge {
-      font-size: 12px; font-weight: 600;
-      padding: 2px 8px; border-radius: 4px;
-      flex-shrink: 0;
-    }
-    .week-title-text { font-weight: 500; font-size: 14px; flex: 1; }
-    .week-progress-mini { font-size: 12px; color: var(--muted); }
-    .week-chevron { color: var(--muted); font-size: 12px; transition: transform 0.2s; }
-    .week-chevron.open { transform: rotate(90deg); }
-    .week-status-tag { font-size: 12px; padding: 2px 7px; border-radius: 4px; }
-
-    .week-tasks { border-top: 1px solid var(--border); }
-    .task-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 8px 14px 8px 40px;
-      cursor: pointer;
-      transition: background 0.1s;
-      border-bottom: 1px solid var(--border);
-    }
-    .task-item:last-child { border-bottom: none; }
-    .task-item:hover { background: var(--hover); }
-    .task-cb {
-      width: 16px; height: 16px; border-radius: 3px;
-      border: 1.5px solid #d4d4d0;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; font-size: 10px; font-weight: 700;
-      transition: all 0.15s;
-    }
-    .task-item.done .task-cb { background: var(--green); border-color: var(--green); color: white; }
-    .task-item.done .task-cb::after { content: '✓'; }
-    .task-item.done .task-label { text-decoration: line-through; color: var(--muted); }
-    .task-label { font-size: 14px; }
-
-    /* ── Export bar ── */
-    .export-bar {
-      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-      padding: 12px 14px; border-radius: 8px;
-      background: #fffbeb; border: 1px solid #fde68a;
-      margin-bottom: 32px; font-size: 13px;
-    }
-    .export-note { color: #92400e; flex: 1; font-size: 13px; }
-    .btn {
-      padding: 6px 14px; border-radius: 6px;
-      font-size: 13px; font-weight: 500; cursor: pointer;
-      border: none; transition: all 0.15s; font-family: inherit;
-    }
-    .btn-primary { background: #37352f; color: white; }
-    .btn-primary:hover { background: #1a1a1a; }
-    .btn-secondary { background: var(--hover); color: var(--text); border: 1px solid var(--border); }
-    .btn-secondary:hover { background: var(--border); }
-
-    /* ── Callout ── */
-    .callout {
-      display: flex; gap: 10px;
-      background: var(--hover); border-radius: 6px;
-      padding: 12px 14px; margin-bottom: 16px;
-      font-size: 14px; line-height: 1.6;
-    }
-    .callout-icon { font-size: 18px; flex-shrink: 0; }
-
-    /* ── Toast ── */
-    #toast {
-      position: fixed; bottom: 24px; right: 24px;
-      background: #37352f; color: white;
-      border-radius: 8px; padding: 10px 16px; font-size: 13px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
-      transform: translateY(60px); opacity: 0;
-      transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
-      z-index: 999; pointer-events: none;
-    }
-    #toast.show { transform: translateY(0); opacity: 1; }
-
-    /* ── Table ── */
-    table { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 16px; }
-    th { text-align: left; padding: 8px 12px; border-bottom: 2px solid var(--border); color: var(--muted); font-weight: 500; font-size: 13px; }
-    td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
-    tr:last-child td { border-bottom: none; }
-    code { font-family: monospace; background: var(--hover); padding: 1px 5px; border-radius: 3px; font-size: 12px; }
   </style>
 </head>
 <body>
-<div id="toast"></div>
+<div class="page">
 
-<div class="layout">
+  <div class="emoji">📹</div>
+  <h1>CamVision AI</h1>
+  <div class="tagline">Nhận diện khuôn mặt & biển số xe qua IP Camera</div>
+  <div class="updated" id="updated-date"></div>
 
-  <!-- ── Sidebar ── -->
-  <nav class="sidebar">
-    <div class="sidebar-title">CamVision AI</div>
-    <a href="#overview" class="sidebar-item active"><span class="sidebar-icon">🏠</span> Tổng quan</a>
-    <a href="#links" class="sidebar-item"><span class="sidebar-icon">🔗</span> Tài liệu & Link</a>
-    <a href="#plan" class="sidebar-item"><span class="sidebar-icon">📅</span> Kế hoạch 8 tuần</a>
-    <a href="#stack" class="sidebar-item"><span class="sidebar-icon">🔧</span> Tech stack</a>
-    <div class="sidebar-divider"></div>
-    <div class="sidebar-title">Tài liệu nhanh</div>
-    <a href="https://github.com/Longphanxdragon/cameraAI" target="_blank" class="sidebar-item">
-      <span class="sidebar-icon">🐙</span> GitHub
+  <!-- Thông tin dự án -->
+  <table class="info-table">
+    <tr>
+      <td>Sinh viên</td>
+      <td><strong>Phan Thành Long</strong></td>
+    </tr>
+    <tr>
+      <td>Trạng thái</td>
+      <td><span class="tag tag-yellow">🔨 Tuần 1 — Đang xây dựng</span></td>
+    </tr>
+    <tr>
+      <td>Loại dự án</td>
+      <td><span class="tag tag-blue">AI · Computer Vision · FastAPI</span></td>
+    </tr>
+    <tr>
+      <td>Camera hỗ trợ</td>
+      <td>Hikvision · Ezviz · Imou · Tenda · Generic RTSP</td>
+    </tr>
+    <tr>
+      <td>Nền tảng</td>
+      <td>Xây trên Chart2Code (giữ FastAPI + JWT + Credit System)</td>
+    </tr>
+    <tr>
+      <td>Thời gian</td>
+      <td>8 tuần · 2026</td>
+    </tr>
+  </table>
+
+  <!-- Tiến độ -->
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span>Tiến độ tổng thể</span>
+      <span>Tuần 1 / 8</span>
+    </div>
+    <div class="bar-bg">
+      <div class="bar-fill" style="width: 10%"></div>
+    </div>
+  </div>
+
+  <!-- Links -->
+  <h2>🔗 Tài liệu & Liên kết</h2>
+  <div class="links">
+
+    <a class="link-card" href="https://github.com/Longphanxdragon/cameraAI" target="_blank">
+      <span class="icon">🐙</span>
+      <div class="info">
+        <div class="name">GitHub — Source Code</div>
+        <div class="url">github.com/Longphanxdragon/cameraAI</div>
+      </div>
+      <span class="arr">↗</span>
     </a>
-    <a href="https://docs.google.com/document/d/1QizFPeG3Yv3PWg5sWgW4ROfTvh5EX5c3ktHnCbKF8AQ/edit?hl=vi&tab=t.0" target="_blank" class="sidebar-item">
-      <span class="sidebar-icon">📄</span> Google Docs
+
+    <a class="link-card" href="https://docs.google.com/document/d/1QizFPeG3Yv3PWg5sWgW4ROfTvh5EX5c3ktHnCbKF8AQ/edit?hl=vi&tab=t.0" target="_blank">
+      <span class="icon">📄</span>
+      <div class="info">
+        <div class="name">Tài liệu yêu cầu (Google Docs)</div>
+        <div class="url">docs.google.com → Mô tả hệ thống, use case, yêu cầu kỹ thuật</div>
+      </div>
+      <span class="arr">↗</span>
     </a>
-  </nav>
 
-  <!-- ── Main ── -->
-  <main class="main">
+    <a class="link-card" href="https://drive.google.com/file/d/1-2hSz85l5MbNxWkwCeTjR7SRE3eh420r/view?usp=sharing" target="_blank">
+      <span class="icon">🏗️</span>
+      <div class="info">
+        <div class="name">Sơ đồ kiến trúc hệ thống (draw.io)</div>
+        <div class="url">drive.google.com → Sơ đồ tổng thể các thành phần</div>
+      </div>
+      <span class="arr">↗</span>
+    </a>
 
-    <div class="page-icon">📹</div>
-    <div class="page-title">CamVision AI</div>
-    <div class="page-desc">Nhận diện khuôn mặt & biển số xe qua IP Camera — dựa trên nền tảng Chart2Code</div>
-
-    <!-- Properties -->
-    <div class="props" id="overview">
-      <div class="prop-row">
-        <div class="prop-label">📌 Trạng thái</div>
-        <div class="prop-value"><span class="tag tag-orange">🔨 Đang xây dựng</span></div>
-      </div>
-      <div class="prop-row">
-        <div class="prop-label">👤 Tác giả</div>
-        <div class="prop-value">Phan Thành Long</div>
-      </div>
-      <div class="prop-row">
-        <div class="prop-label">📅 Thời gian</div>
-        <div class="prop-value">8 tuần · 2026</div>
-      </div>
-      <div class="prop-row">
-        <div class="prop-label">🎯 Loại dự án</div>
-        <div class="prop-value"><span class="tag tag-blue">AI / Computer Vision</span></div>
-      </div>
-      <div class="prop-row">
-        <div class="prop-label">📷 Camera</div>
-        <div class="prop-value">Hikvision · Ezviz · Imou · Tenda · Generic RTSP</div>
-      </div>
-      <div class="prop-row">
-        <div class="prop-label">📊 Tiến độ</div>
-        <div class="prop-value" style="flex:1">
-          <div class="progress-bar-bg" style="margin-top:4px">
-            <div class="progress-bar-fill" id="prog-bar" style="width:0%"></div>
-          </div>
-          <div style="font-size:12px;color:var(--muted);margin-top:3px" id="prog-text">0 / 40 tasks</div>
-        </div>
-      </div>
+    <div class="link-pending">
+      <span class="icon">🖼️</span>
+      <span>Figma UI Design — sẽ cập nhật ở Tuần 6</span>
     </div>
 
-    <!-- Export bar -->
-    <div class="export-bar">
-      <span class="export-note">📤 Cập nhật xong → xuất file → gửi Zalo/Email cho team</span>
-      <button class="btn btn-primary" onclick="exportFile()">⬇ Xuất file cập nhật</button>
-      <label class="btn btn-secondary" style="cursor:pointer">
-        ⬆ Nhập từ người khác
-        <input type="file" accept=".html" onchange="importFile(event)" style="display:none" />
-      </label>
+    <div class="link-pending">
+      <span class="icon">🚀</span>
+      <span>Live Demo — sẽ cập nhật ở Tuần 8 sau khi deploy</span>
     </div>
 
-    <hr id="links" />
+  </div>
 
-    <!-- Links section -->
-    <h2>🔗 Tài liệu & Liên kết</h2>
+  <!-- Kế hoạch 8 tuần -->
+  <h2>📅 Kế hoạch 8 tuần</h2>
+  <table class="week-table">
+    <thead>
+      <tr>
+        <th style="width:70px">Tuần</th>
+        <th>Nội dung</th>
+        <th style="width:130px">Deliverable</th>
+        <th style="width:110px">Trạng thái</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="wnum" style="background:#dbeafe;color:#1e40af">1</span></td>
+        <td>Setup môi trường, cài dependencies, test kết nối RTSP với camera</td>
+        <td class="deliverable">Script test_rtsp.py chạy được</td>
+        <td><span class="status s-active">⏳ Đang làm</span></td>
+      </tr>
+      <tr>
+        <td><span class="wnum" style="background:#f3e8ff;color:#6b21a8">2</span></td>
+        <td>Xây module nhận diện khuôn mặt (<code>face_recognizer.py</code>)</td>
+        <td class="deliverable">Nhận diện ≥ 80%</td>
+        <td><span class="status s-upcoming">Chưa bắt đầu</span></td>
+      </tr>
+      <tr>
+        <td><span class="wnum" style="background:#fee2e2;color:#991b1b">3</span></td>
+        <td>Xây module phát hiện biển số xe — YOLOv8 + EasyOCR</td>
+        <td class="deliverable">OCR biển số VN ≥ 70%</td>
+        <td><span class="status s-upcoming">Chưa bắt đầu</span></td>
+      </tr>
+      <tr>
+        <td><span class="wnum" style="background:#d1fae5;color:#065f46">4</span></td>
+        <td>Camera Manager — kết nối đa hãng, RTSP templates, auto-reconnect</td>
+        <td class="deliverable">API cameras hoạt động</td>
+        <td><span class="status s-upcoming">Chưa bắt đầu</span></td>
+      </tr>
+      <tr>
+        <td><span class="wnum" style="background:#d1fae5;color:#065f46">5</span></td>
+        <td>Tích hợp AI vào FastAPI qua WebSocket — real-time stream</td>
+        <td class="deliverable">WebSocket stream chạy</td>
+        <td><span class="status s-upcoming">Chưa bắt đầu</span></td>
+      </tr>
+      <tr>
+        <td><span class="wnum" style="background:#ffedd5;color:#9a3412">6</span></td>
+        <td>Frontend dashboard — live view, bounding box overlay, quản lý camera</td>
+        <td class="deliverable">Giao diện xem camera</td>
+        <td><span class="status s-upcoming">Chưa bắt đầu</span></td>
+      </tr>
+      <tr>
+        <td><span class="wnum" style="background:#f3e8ff;color:#6b21a8">7</span></td>
+        <td>Alert email, whitelist, báo cáo thống kê, tối ưu hiệu năng</td>
+        <td class="deliverable">Email cảnh báo hoạt động</td>
+        <td><span class="status s-upcoming">Chưa bắt đầu</span></td>
+      </tr>
+      <tr>
+        <td><span class="wnum" style="background:#f1f1ef;color:#37352f">8</span></td>
+        <td>Testing, Docker, deploy, quay video demo, hoàn thiện README</td>
+        <td class="deliverable">Portfolio hoàn chỉnh</td>
+        <td><span class="status s-upcoming">Chưa bắt đầu</span></td>
+      </tr>
+    </tbody>
+  </table>
 
-    <div class="callout">
-      <span class="callout-icon">💡</span>
-      <div>Tất cả link dự án tập trung ở đây. Nhấn vào để mở. Cần thêm link mới → nhập ở phần bên dưới.</div>
-    </div>
+  <!-- Tech stack -->
+  <h2>🔧 Công nghệ sử dụng</h2>
+  <div class="stack-grid">
+    <div class="stack-item"><div class="dot" style="background:#3b82f6"></div>FastAPI (backend)</div>
+    <div class="stack-item"><div class="dot" style="background:#f59e0b"></div>JWT + Stripe (auth & payment)</div>
+    <div class="stack-item"><div class="dot" style="background:#10b981"></div>SQLite (database)</div>
+    <div class="stack-item"><div class="dot" style="background:#06b6d4"></div>OpenCV (RTSP stream)</div>
+    <div class="stack-item"><div class="dot" style="background:#a855f7"></div>face-recognition (khuôn mặt)</div>
+    <div class="stack-item"><div class="dot" style="background:#ef4444"></div>YOLOv8 + EasyOCR (biển số)</div>
+    <div class="stack-item"><div class="dot" style="background:#ec4899"></div>WebSocket (real-time)</div>
+    <div class="stack-item"><div class="dot" style="background:#64748b"></div>Docker (deployment)</div>
+  </div>
 
-    <h3>📋 Yêu cầu & Tài liệu</h3>
-    <div class="link-grid">
-      <a href="https://docs.google.com/document/d/1QizFPeG3Yv3PWg5sWgW4ROfTvh5EX5c3ktHnCbKF8AQ/edit?hl=vi&tab=t.0" target="_blank" class="link-row" id="card-srs">
-        <span class="link-icon">📄</span>
-        <div class="link-info">
-          <div class="link-name">Tài liệu yêu cầu (Google Docs)</div>
-          <div class="link-url" id="url-srs">docs.google.com/document/d/1QizFPeG3Yv3PWg5sWgW4ROfTvh5EX5c3ktHnCbKF8AQ</div>
-        </div>
-        <span class="link-arrow">↗</span>
-      </a>
+  <div class="note">
+    ℹ️ <strong>Ghi chú cho Mentor:</strong> Dự án này kế thừa nền tảng Chart2Code (FastAPI + JWT + hệ thống credit + Stripe thanh toán). Phần thay đổi chính là lõi AI — từ nhận diện biểu đồ sang nhận diện khuôn mặt và biển số xe qua camera IP. File này sẽ được cập nhật mỗi tuần khi hoàn thành các milestone.
+  </div>
 
-      <div class="link-row link-empty" id="card-usecase" onclick="promptLink('usecase','👥 Use Case / User Stories','Nhập link Google Docs hoặc Notion...')">
-        <span class="link-icon">👥</span>
-        <div class="link-info">
-          <div class="link-name">Use Case & User Stories</div>
-          <div class="link-url" id="url-usecase">Chưa có link — nhấn để thêm</div>
-        </div>
-        <span class="link-arrow">+</span>
-      </div>
+  <footer>
+    CamVision AI · Phan Thành Long · <span id="footer-date"></span>
+  </footer>
 
-      <div class="link-row link-empty" id="card-meeting" onclick="promptLink('meeting','🗒 Biên bản họp','Nhập link Google Docs...')">
-        <span class="link-icon">🗒️</span>
-        <div class="link-info">
-          <div class="link-name">Biên bản họp / Meeting Notes</div>
-          <div class="link-url" id="url-meeting">Chưa có link — nhấn để thêm</div>
-        </div>
-        <span class="link-arrow">+</span>
-      </div>
-    </div>
-
-    <h3 style="margin-top:20px">🎨 Thiết kế & Kiến trúc</h3>
-    <div class="link-grid">
-      <div class="link-row link-empty" id="card-figma" onclick="promptLink('figma','🖼 Figma Design','Nhập link Figma...')">
-        <span class="link-icon">🖼️</span>
-        <div class="link-info">
-          <div class="link-name">Figma — UI/UX Mockup</div>
-          <div class="link-url" id="url-figma">Chưa có link — nhấn để thêm</div>
-        </div>
-        <span class="link-arrow">+</span>
-      </div>
-
-      <a href="https://drive.google.com/file/d/1-2hSz85l5MbNxWkwCeTjR7SRE3eh420r/view?usp=sharing" target="_blank" class="link-row" id="card-arch">
-        <span class="link-icon">🏗️</span>
-        <div class="link-info">
-          <div class="link-name">Sơ đồ kiến trúc (draw.io)</div>
-          <div class="link-url" id="url-arch">drive.google.com/file/d/1-2hSz85l5MbNxWkwCeTjR7SRE3eh420r</div>
-        </div>
-        <span class="link-arrow">↗</span>
-      </a>
-    </div>
-
-    <h3 style="margin-top:20px">💻 Code & Deploy</h3>
-    <div class="link-grid">
-      <a href="https://github.com/Longphanxdragon/cameraAI" target="_blank" class="link-row" id="card-github">
-        <span class="link-icon">🐙</span>
-        <div class="link-info">
-          <div class="link-name">GitHub — cameraAI</div>
-          <div class="link-url" id="url-github">github.com/Longphanxdragon/cameraAI</div>
-        </div>
-        <span class="link-arrow">↗</span>
-      </a>
-
-      <a href="http://localhost:8000/docs" target="_blank" class="link-row" id="card-api">
-        <span class="link-icon">⚡</span>
-        <div class="link-info">
-          <div class="link-name">API Docs (Swagger UI)</div>
-          <div class="link-url" id="url-api">localhost:8000/docs — chạy server trước</div>
-        </div>
-        <span class="link-arrow">↗</span>
-      </a>
-
-      <div class="link-row link-empty" id="card-deploy" onclick="promptLink('deploy','🚀 Live Demo','Nhập link Railway/Render/VPS...')">
-        <span class="link-icon">🚀</span>
-        <div class="link-info">
-          <div class="link-name">Live Demo / Staging Server</div>
-          <div class="link-url" id="url-deploy">Chưa deploy — nhấn để thêm khi có</div>
-        </div>
-        <span class="link-arrow">+</span>
-      </div>
-    </div>
-
-    <!-- draw.io hướng dẫn -->
-    <div class="callout" style="margin-top:20px;background:#f0f9ff;border-left:3px solid #0ea5e9">
-      <span class="callout-icon">📐</span>
-      <div>
-        <strong>Cách lấy link draw.io để chia sẻ:</strong><br/>
-        Vào <a href="https://app.diagrams.net" target="_blank" style="color:var(--blue)">app.diagrams.net</a>
-        → Vẽ sơ đồ → <strong>File → Share → Get a link</strong> (hoặc lưu vào Google Drive rồi share link Drive).
-        Nếu lưu Google Drive: <strong>chuột phải file → Share → Copy link</strong> → paste vào đây.
-      </div>
-    </div>
-
-    <hr id="plan" />
-
-    <!-- 8-week plan -->
-    <h2>📅 Kế hoạch 8 tuần</h2>
-    <p style="color:var(--muted);font-size:14px;margin-bottom:20px">Nhấn vào task để đánh dấu hoàn thành. Tiến độ tự lưu.</p>
-    <div id="timeline"></div>
-
-    <hr id="stack" />
-
-    <!-- Tech stack -->
-    <h2>🔧 Tech Stack</h2>
-    <table>
-      <tr><th>Lớp</th><th>Công nghệ</th><th>Giữ từ Chart2Code?</th></tr>
-      <tr><td>Backend framework</td><td><code>FastAPI</code> + <code>Uvicorn</code></td><td><span class="tag tag-green">✅ Giữ nguyên</span></td></tr>
-      <tr><td>Authentication</td><td>JWT (<code>python-jose</code>)</td><td><span class="tag tag-green">✅ Giữ nguyên</span></td></tr>
-      <tr><td>Payment</td><td>Stripe subscriptions</td><td><span class="tag tag-green">✅ Giữ nguyên</span></td></tr>
-      <tr><td>Database</td><td>SQLite + helpers</td><td><span class="tag tag-orange">🔄 Thêm bảng mới</span></td></tr>
-      <tr><td>Camera stream</td><td><code>opencv-python</code> RTSP</td><td><span class="tag tag-blue">✨ Mới</span></td></tr>
-      <tr><td>Face recognition</td><td><code>face-recognition</code> (dlib)</td><td><span class="tag tag-blue">✨ Mới</span></td></tr>
-      <tr><td>Plate detection</td><td><code>ultralytics</code> YOLOv8</td><td><span class="tag tag-blue">✨ Mới</span></td></tr>
-      <tr><td>Plate OCR</td><td><code>easyocr</code></td><td><span class="tag tag-blue">✨ Mới</span></td></tr>
-      <tr><td>Real-time</td><td>WebSocket</td><td><span class="tag tag-blue">✨ Mới</span></td></tr>
-    </table>
-
-    <h2>📡 Camera tương thích</h2>
-    <table>
-      <tr><th>Hãng</th><th>RTSP URL mẫu</th></tr>
-      <tr><td>Hikvision</td><td><code>rtsp://user:pass@ip:554/Streaming/Channels/101</code></td></tr>
-      <tr><td>Ezviz</td><td><code>rtsp://user:pass@ip:554/h264/ch1/main/av_stream</code></td></tr>
-      <tr><td>Imou</td><td><code>rtsp://user:pass@ip:554/cam/realmonitor?channel=1</code></td></tr>
-      <tr><td>Tenda</td><td><code>rtsp://user:pass@ip:554/stream1</code></td></tr>
-      <tr><td>Generic</td><td>User nhập URL thủ công</td></tr>
-    </table>
-
-  </main>
 </div>
-
 <script>
-/* ──────────────── DATA ──────────────── */
-const GITHUB = 'https://github.com/Longphanxdragon/cameraAI';
-const GDOC   = 'https://docs.google.com/document/d/1QizFPeG3Yv3PWg5sWgW4ROfTvh5EX5c3ktHnCbKF8AQ/edit?hl=vi&tab=t.0';
-
-// ── Links mặc định (đã có link thật) ──
-const DEFAULT_LINKS = {
-  'href-github': GITHUB,
-  'href-srs':    GDOC,
-};
-
-const WEEKS = [
-  { num:1, color:'#2383e2', title:'Tuần 1 — Setup & RTSP Test',        focus:'Chạy Chart2Code gốc, test kết nối RTSP',
-    tasks:['Review toàn bộ Chart2Code — hiểu flow main.py → ml_service.py','Cài dependencies: opencv-python, face-recognition, ultralytics, easyocr','Test kết nối RTSP với camera hoặc video file giả lập','Tạo script test_rtsp.py — confirm đọc được frame','Cập nhật requirements.txt'] },
-  { num:2, color:'#6940a5', title:'Tuần 2 — Nhận diện khuôn mặt',      focus:'Module face_recognizer.py độc lập',
-    tasks:['Tạo src/face_recognizer.py (thay predict.py)','Tạo data/known_faces/ — thêm 5-10 ảnh người test','Implement: load → detect → trả bbox + tên','Test với ảnh tĩnh, benchmark fps','Viết unit test tests/test_face_recognizer.py'] },
-  { num:3, color:'#e03e3e', title:'Tuần 3 — Phát hiện biển số xe',     focus:'YOLOv8 detect + EasyOCR đọc biển số VN',
-    tasks:['Download YOLOv8n pre-trained model','Tạo src/plate_detector.py','Implement: detect bbox → crop → EasyOCR → clean text','Xử lý định dạng biển số VN: 51A-123.45, 30H-1234','Test với 20+ ảnh biển số thực tế'] },
-  { num:4, color:'#0f7b6c', title:'Tuần 4 — Camera Manager',           focus:'Đa hãng, RTSP pool, auto-reconnect',
-    tasks:['Tạo src/camera_manager.py với RTSP templates','Implement auto-reconnect khi mất kết nối','Thêm bảng cameras vào SQLite DB','API CRUD: GET/POST/DELETE /api/cameras','Test kết nối với ≥ 2 brand camera khác nhau'] },
-  { num:5, color:'#0f7b6c', title:'Tuần 5 — WebSocket Integration',    focus:'AI pipeline vào FastAPI real-time',
-    tasks:['Thêm WebSocket /ws/stream/{cam_id} vào main.py','Pipeline: cam_id → RTSP URL → frame → AI → JSON','Xác thực JWT qua WebSocket (token URL param)','Tích hợp credit system cho phiên stream','Lưu detection log vào bảng detections'] },
-  { num:6, color:'#d9730d', title:'Tuần 6 — Frontend Dashboard',       focus:'Live view + bounding box overlay',
-    tasks:['Trang cameras.html — quản lý danh sách camera','Form thêm camera: chọn hãng → auto-generate RTSP URL','Trang live.html — canvas overlay bounding boxes','WebSocket client: nhận JSON → vẽ boxes + label','History panel: log detection trong ngày'] },
-  { num:7, color:'#9b59b6', title:'Tuần 7 — Alerts & Báo cáo',        focus:'Email cảnh báo, analytics, whitelist',
-    tasks:['Alert system: email khi phát hiện người lạ / biển số lạ','Whitelist: danh sách biển số/khuôn mặt được phép','Trang reports.html: biểu đồ detection theo giờ/ngày','Export CSV log detections','Performance tuning: multi-thread, frame skip'] },
-  { num:8, color:'#37352f', title:'Tuần 8 — Deploy & Portfolio',       focus:'Production-ready, đóng gói fresher portfolio',
-    tasks:['Viết README.md đầy đủ + API documentation','Tạo docker-compose.yml cho dễ deploy','Test với ≥ 3 hãng camera khác nhau','Load test: 4 camera đồng thời, đo CPU/RAM','Quay video demo 3-5 phút cho portfolio'] },
-];
-
-/* ──────────────── STATE ──────────────── */
-const KEY = 'camvision_v2';
-// EXPORTED_STATE_START
-let state = {}; // EXPORTED STATE — đừng sửa dòng này
-// EXPORTED_STATE_END
-
-function boot() {
-  // Merge: default links → exported state → localStorage
-  state = { ...DEFAULT_LINKS, ...state };
-  try {
-    const ls = localStorage.getItem(KEY);
-    if (ls) state = { ...state, ...JSON.parse(ls) };
-  } catch(e) {}
-  save();
-}
-
-function save() {
-  localStorage.setItem(KEY, JSON.stringify(state));
-}
-
-/* ──────────────── TOAST ──────────────── */
-function toast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 2500);
-}
-
-/* ──────────────── PROMPT LINK ──────────────── */
-function promptLink(id, label, placeholder) {
-  const current = state['href-' + id] || '';
-  const url = window.prompt(`${label}\n\nPaste link vào đây:`, current || placeholder);
-  if (url === null) return; // cancelled
-  const cleaned = url.trim();
-  if (!cleaned || cleaned === placeholder) return;
-  state['href-' + id] = cleaned;
-  save();
-  applyLink(id, cleaned);
-  toast('✅ Đã lưu link!');
-}
-
-function applyLink(id, url) {
-  const card = document.getElementById('card-' + id);
-  const urlEl = document.getElementById('url-' + id);
-  if (!card || !urlEl) return;
-
-  urlEl.textContent = url.length > 60 ? url.slice(0, 59) + '…' : url;
-  card.classList.remove('link-empty');
-
-  // Nếu là div thì đổi thành link thật
-  if (card.tagName === 'DIV') {
-    card.onclick = null;
-    card.style.cursor = 'pointer';
-    card.addEventListener('click', () => window.open(url, '_blank'));
-    // Đổi arrow
-    const arrow = card.querySelector('.link-arrow');
-    if (arrow) arrow.textContent = '↗';
-  }
-}
-
-/* ──────────────── TASK TOGGLE ──────────────── */
-function toggleTask(wk, ti) {
-  const k = `w${wk}t${ti}`;
-  state[k] = state[k] === 'done' ? undefined : 'done';
-  if (!state[k]) delete state[k];
-  save();
-  renderProgress();
-  // Re-render just that week header
-  const header = document.getElementById(`wh-${wk}`);
-  if (header) updateWeekHeader(wk, header);
-}
-
-/* ──────────────── RENDER TIMELINE ──────────────── */
-function renderTimeline() {
-  const container = document.getElementById('timeline');
-  container.innerHTML = '';
-  WEEKS.forEach(week => {
-    const block = document.createElement('div');
-    block.className = 'week-block';
-
-    // Header
-    const header = document.createElement('div');
-    header.className = 'week-header';
-    header.id = `wh-${week.num}`;
-    header.onclick = () => {
-      const tasks = document.getElementById(`wt-${week.num}`);
-      const ch = header.querySelector('.week-chevron');
-      const open = tasks.style.display !== 'none';
-      tasks.style.display = open ? 'none' : 'block';
-      ch.classList.toggle('open', !open);
-    };
-    block.appendChild(header);
-    updateWeekHeader(week.num, header);
-
-    // Tasks
-    const tasksDiv = document.createElement('div');
-    tasksDiv.className = 'week-tasks';
-    tasksDiv.id = `wt-${week.num}`;
-    tasksDiv.style.display = 'none'; // collapsed by default
-
-    week.tasks.forEach((task, i) => {
-      const item = document.createElement('div');
-      const isDone = state[`w${week.num}t${i}`] === 'done';
-      item.className = 'task-item' + (isDone ? ' done' : '');
-      item.innerHTML = `<div class="task-cb"></div><span class="task-label">${task}</span>`;
-      item.onclick = () => {
-        toggleTask(week.num, i);
-        const nowDone = state[`w${week.num}t${i}`] === 'done';
-        item.className = 'task-item' + (nowDone ? ' done' : '');
-      };
-      tasksDiv.appendChild(item);
-    });
-    block.appendChild(tasksDiv);
-    container.appendChild(block);
-  });
-}
-
-function updateWeekHeader(weekNum, header) {
-  const week = WEEKS.find(w => w.num === weekNum);
-  const done = week.tasks.filter((_, i) => state[`w${weekNum}t${i}`] === 'done').length;
-  const total = week.tasks.length;
-  const allDone = done === total;
-  const anyDone = done > 0;
-
-  const statusText = allDone ? '✓ Xong' : anyDone ? '⏳ Đang làm' : 'Chưa bắt đầu';
-  const statusBg   = allDone ? '#dcfce7' : anyDone ? '#ffedd5' : '#f1f1ef';
-  const statusColor= allDone ? '#15803d' : anyDone ? '#c2410c' : '#9b9a97';
-
-  const existing = document.getElementById(`wh-${weekNum}`);
-  const isOpen = existing ? existing.querySelector('.week-chevron')?.classList.contains('open') : false;
-
-  header.innerHTML = `
-    <span class="week-num-badge" style="background:${week.color}20;color:${week.color}">${week.num}</span>
-    <span class="week-title-text">${week.title}</span>
-    <span class="week-status-tag" style="background:${statusBg};color:${statusColor}">${statusText}</span>
-    <span class="week-progress-mini">${done}/${total}</span>
-    <span class="week-chevron ${isOpen ? 'open' : ''}">▶</span>
-  `;
-}
-
-/* ──────────────── RENDER PROGRESS ──────────────── */
-function renderProgress() {
-  let done = 0, total = 0;
-  WEEKS.forEach(w => {
-    total += w.tasks.length;
-    w.tasks.forEach((_, i) => { if (state[`w${w.num}t${i}`] === 'done') done++; });
-  });
-  const pct = total ? Math.round(done / total * 100) : 0;
-  document.getElementById('prog-bar').style.width = pct + '%';
-  document.getElementById('prog-text').textContent = `${done} / ${total} tasks · ${pct}%`;
-}
-
-/* ──────────────── RESTORE LINKS ──────────────── */
-function restoreLinks() {
-  const ids = ['usecase','meeting','figma','arch','deploy'];
-  ids.forEach(id => {
-    const url = state['href-' + id];
-    if (url) applyLink(id, url);
-  });
-}
-
-/* ──────────────── EXPORT ──────────────── */
-function exportFile() {
-  const stateJson = JSON.stringify(state);
-  let html = document.documentElement.outerHTML;
-  html = html.replace(
-    /\/\/ EXPORTED_STATE_START[\s\S]*?\/\/ EXPORTED_STATE_END/,
-    `// EXPORTED_STATE_START\nlet state = ${stateJson}; // EXPORTED STATE — đừng sửa dòng này\n// EXPORTED_STATE_END`
-  );
-  const now = new Date();
-  const stamp = now.toISOString().slice(0,10).replace(/-/g,'');
-  const filename = `CamVision_Hub_${stamp}.html`;
-  const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-  const url  = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = filename; a.click();
-  URL.revokeObjectURL(url);
-  toast(`✅ Đã xuất "${filename}" — gửi file này cho team!`);
-}
-
-/* ──────────────── IMPORT ──────────────── */
-function importFile(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = e => {
-    try {
-      const match = e.target.result.match(/let state = (\{.*?\}); \/\/ EXPORTED STATE/);
-      if (!match) { toast('⚠️ File không hợp lệ'); return; }
-      const imported = JSON.parse(match[1]);
-      state = { ...state, ...imported };
-      save();
-      restoreLinks();
-      renderProgress();
-      renderTimeline();
-      toast('✅ Đã nhập tiến độ thành công!');
-    } catch(err) { toast('❌ Lỗi: ' + err.message); }
-    event.target.value = '';
-  };
-  reader.readAsText(file, 'utf-8');
-}
-
-/* ──────────────── INIT ──────────────── */
-document.addEventListener('DOMContentLoaded', () => {
-  boot();
-  renderTimeline();
-  renderProgress();
-  restoreLinks();
-});
+  const d = new Date().toLocaleDateString('vi-VN', {day:'2-digit',month:'2-digit',year:'numeric'});
+  document.getElementById('updated-date').textContent = 'Cập nhật lần cuối: ' + d;
+  document.getElementById('footer-date').textContent = d;
 </script>
 </body>
 </html>
