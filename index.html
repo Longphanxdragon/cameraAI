@@ -3,413 +3,355 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CamVision AI — Báo cáo tiến độ</title>
+  <title>Báo cáo tiến độ — CamVision AI</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      font-family: 'Inter', sans-serif;
-      background: #f6f6f4;
-      color: #1a1a1a;
-      font-size: 15px;
-      line-height: 1.7;
-    }
-
-    .page {
-      max-width: 680px;
-      margin: 0 auto;
-      padding: 48px 24px 100px;
-    }
-
-    /* ── Header ── */
-    .header { margin-bottom: 40px; }
-    .header h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
-    .header p  { color: #6b7280; font-size: 15px; }
-
-    /* ── Info card ── */
-    .info-card {
-      background: #fff;
-      border-radius: 12px;
-      border: 1px solid #e5e7eb;
-      padding: 20px 24px;
-      margin-bottom: 16px;
-    }
-    .info-row {
-      display: flex; gap: 16px;
-      padding: 8px 0;
-      border-bottom: 1px solid #f3f4f6;
+      background: #e8e8e8;
+      font-family: 'Inter', 'Segoe UI', sans-serif;
       font-size: 14px;
+      color: #1a1a1a;
+      line-height: 1.75;
+      padding: 32px 16px 64px;
     }
-    .info-row:last-child { border-bottom: none; }
-    .info-label { color: #6b7280; width: 130px; flex-shrink: 0; }
-    .info-value { font-weight: 500; }
-    .badge {
-      display: inline-block;
-      padding: 2px 10px; border-radius: 99px;
-      font-size: 13px; font-weight: 600;
+
+    /* Trông như tờ giấy A4 */
+    .paper {
+      max-width: 720px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 56px 64px 72px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+      border-radius: 2px;
     }
-    .badge-yellow { background: #fef3c7; color: #92400e; }
-    .badge-green  { background: #d1fae5; color: #065f46; }
-    .badge-gray   { background: #f3f4f6; color: #6b7280; }
+    @media(max-width:600px){
+      .paper { padding: 32px 24px 48px; }
+    }
+
+    /* ── Tiêu đề ── */
+    .doc-header { text-align: center; margin-bottom: 40px; padding-bottom: 24px; border-bottom: 2px solid #1a1a1a; }
+    .doc-school  { font-size: 13px; color: #555; margin-bottom: 4px; }
+    .doc-title   { font-size: 22px; font-weight: 700; margin: 12px 0 6px; }
+    .doc-subtitle{ font-size: 15px; color: #333; margin-bottom: 16px; }
+    .doc-meta    { font-size: 13px; color: #555; }
+
+    /* ── Section ── */
+    h2 {
+      font-size: 15px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      margin: 36px 0 14px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #d1d1d1;
+      color: #111;
+    }
+    h2:first-of-type { margin-top: 0; }
+
+    p { margin-bottom: 10px; }
+
+    /* ── Thông tin bảng ── */
+    .info-table { width: 100%; border-collapse: collapse; margin-bottom: 4px; font-size: 14px; }
+    .info-table tr { border-bottom: 1px solid #ebebeb; }
+    .info-table tr:last-child { border-bottom: none; }
+    .info-table td { padding: 9px 4px; vertical-align: top; }
+    .info-table td:first-child { color: #555; width: 160px; }
+    .info-table td:last-child  { font-weight: 500; }
+
+    /* ── Trạng thái chung ── */
+    .status-big {
+      text-align: center;
+      padding: 18px;
+      border: 2px solid #f59e0b;
+      border-radius: 6px;
+      background: #fffbeb;
+      margin: 14px 0 4px;
+    }
+    .status-big .status-label { font-size: 13px; color: #92400e; }
+    .status-big .status-main  { font-size: 20px; font-weight: 700; color: #92400e; margin: 4px 0; }
+    .status-big .status-sub   { font-size: 13px; color: #78350f; }
 
     /* ── Progress bar ── */
-    .progress-wrap {
-      background: #fff; border: 1px solid #e5e7eb;
-      border-radius: 12px; padding: 20px 24px;
-      margin-bottom: 16px;
-    }
-    .progress-top {
-      display: flex; justify-content: space-between;
-      font-size: 14px; margin-bottom: 10px;
-    }
-    .progress-title { font-weight: 600; }
-    .progress-pct   { color: #059669; font-weight: 600; }
-    .bar-bg  { height: 8px; background: #e5e7eb; border-radius: 99px; overflow: hidden; margin-bottom: 10px; }
-    .bar-fill{ height: 100%; border-radius: 99px; background: #059669; }
-    .weeks-dots { display: flex; gap: 6px; }
-    .w-dot {
-      width: 28px; height: 28px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 12px; font-weight: 700; text-decoration: none;
-    }
-    .w-done     { background: #d1fae5; color: #065f46; }
-    .w-active   { background: #fef3c7; color: #92400e; outline: 2px solid #d97706; }
-    .w-upcoming { background: #f3f4f6; color: #9ca3af; }
-
-    /* ── Section heading ── */
-    .section-label {
-      font-size: 11px; font-weight: 600; letter-spacing: 0.8px;
-      text-transform: uppercase; color: #9ca3af;
-      margin: 32px 0 10px;
-    }
-
-    /* ── Links ── */
-    .link-card {
-      display: flex; align-items: center; gap: 14px;
-      background: #fff; border: 1px solid #e5e7eb;
-      border-radius: 10px; padding: 14px 16px;
-      text-decoration: none; color: #1a1a1a;
-      margin-bottom: 8px;
-      transition: box-shadow 0.15s, border-color 0.15s;
-    }
-    .link-card:hover { border-color: #d1d5db; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-    .link-icon  { font-size: 22px; flex-shrink: 0; }
-    .link-body  { flex: 1; }
-    .link-name  { font-weight: 600; font-size: 14px; }
-    .link-desc  { font-size: 13px; color: #6b7280; margin-top: 1px; }
-    .link-arrow { color: #d1d5db; }
-    .link-card:hover .link-arrow { color: #6b7280; }
-    .link-soon  {
-      background: #fafafa; border: 1px dashed #e5e7eb;
-      border-radius: 10px; padding: 12px 16px;
-      font-size: 13px; color: #9ca3af;
-      margin-bottom: 8px;
-      display: flex; align-items: center; gap: 10px;
-    }
-
-    /* ── Week cards ── */
-    .week-card {
-      background: #fff; border: 1px solid #e5e7eb;
-      border-radius: 12px; overflow: hidden;
-      margin-bottom: 10px;
-    }
-    .week-top {
+    .progress-row {
       display: flex; align-items: center; gap: 12px;
-      padding: 14px 18px;
+      margin: 14px 0;
     }
-    .week-num {
-      font-size: 13px; font-weight: 700;
-      padding: 3px 10px; border-radius: 6px;
-      flex-shrink: 0;
+    .progress-bar-bg {
+      flex: 1; height: 14px;
+      background: #e5e7eb; border-radius: 99px; overflow: hidden;
     }
-    .week-info { flex: 1; }
-    .week-name { font-weight: 600; font-size: 14px; }
-    .week-desc { font-size: 13px; color: #6b7280; }
-    .week-status {
-      font-size: 12px; font-weight: 600;
-      padding: 4px 10px; border-radius: 99px; flex-shrink: 0;
+    .progress-bar-fill {
+      height: 100%; border-radius: 99px; background: #16a34a;
     }
-    .week-body {
-      border-top: 1px solid #f3f4f6;
-      padding: 14px 18px;
+    .progress-label { font-size: 13px; color: #555; white-space: nowrap; }
+
+    /* ── Tài liệu links ── */
+    .link-row {
+      display: flex; align-items: center;
+      gap: 10px; padding: 10px 0;
+      border-bottom: 1px solid #ebebeb;
+      font-size: 14px;
     }
-    .task-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px; }
-    .task-row  {
-      display: flex; align-items: flex-start; gap: 8px;
-      font-size: 14px; color: #374151;
+    .link-row:last-child { border-bottom: none; }
+    .link-row a {
+      color: #1d4ed8; text-decoration: underline;
+      font-weight: 500;
     }
-    .task-icon { flex-shrink: 0; margin-top: 1px; }
-    .task-done { color: #9ca3af; text-decoration: line-through; }
+    .link-row a:hover { color: #1e3a8a; }
+    .link-note { color: #6b7280; font-size: 13px; }
+    .link-soon { color: #9ca3af; font-style: italic; font-size: 13px; }
+
+    /* ── Bảng kế hoạch ── */
+    .plan-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 4px; }
+    .plan-table th {
+      background: #f3f4f6; text-align: left;
+      padding: 9px 10px; font-weight: 600;
+      border: 1px solid #d1d1d1; font-size: 12px;
+    }
+    .plan-table td {
+      padding: 9px 10px;
+      border: 1px solid #e5e7eb;
+      vertical-align: top;
+    }
+    .plan-table tr.active-row td { background: #fffbeb; }
+    .plan-table tr.done-row  td { background: #f0fdf4; color: #6b7280; }
+
+    .tag {
+      display: inline-block; padding: 2px 8px;
+      border-radius: 4px; font-size: 12px; font-weight: 600;
+      white-space: nowrap;
+    }
+    .tag-active   { background: #fef3c7; color: #92400e; }
+    .tag-done     { background: #d1fae5; color: #065f46; }
+    .tag-upcoming { background: #f3f4f6; color: #6b7280; }
+
+    /* ── Chi tiết tuần hiện tại ── */
+    .current-week-box {
+      border: 1px solid #d1d5db;
+      border-radius: 6px; overflow: hidden;
+      margin-top: 4px;
+    }
+    .cw-header {
+      background: #f8fafc; padding: 12px 16px;
+      border-bottom: 1px solid #d1d5db;
+      font-weight: 700; font-size: 14px;
+    }
+    .cw-body { padding: 14px 16px; }
+    .task { display: flex; gap: 8px; padding: 5px 0; font-size: 14px; }
+    .task-done-text { text-decoration: line-through; color: #9ca3af; }
     .result-box {
-      background: #f0fdf4; border-left: 3px solid #22c55e;
-      border-radius: 0 6px 6px 0; padding: 10px 14px;
-      font-size: 13px; color: #166534;
+      margin-top: 12px; padding: 10px 14px;
+      border-left: 3px solid #16a34a;
+      background: #f0fdf4; font-size: 13px; color: #166534;
+      border-radius: 0 4px 4px 0;
     }
     .result-box.pending {
-      background: #f9fafb; border-left-color: #d1d5db; color: #6b7280;
+      border-left-color: #d97706;
+      background: #fffbeb; color: #92400e;
     }
 
-    footer {
-      text-align: center; font-size: 12px; color: #9ca3af;
-      margin-top: 48px; padding-top: 20px;
-      border-top: 1px solid #e5e7eb;
+    /* ── Chú thích ── */
+    .footnote {
+      margin-top: 40px; padding-top: 16px;
+      border-top: 1px solid #d1d1d1;
+      font-size: 12px; color: #9ca3af;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-<div class="page">
+<div class="paper">
 
-  <!-- Header -->
-  <div class="header">
-    <h1>📹 CamVision AI — Báo cáo tiến độ</h1>
-    <p>Hệ thống camera thông minh: nhận diện khuôn mặt và đọc biển số xe tự động</p>
-  </div>
-
-  <!-- Info -->
-  <div class="info-card">
-    <div class="info-row">
-      <span class="info-label">Sinh viên</span>
-      <span class="info-value">Phan Thành Long</span>
-    </div>
-    <div class="info-row">
-      <span class="info-label">Trạng thái</span>
-      <span class="info-value"><span class="badge badge-yellow">⏳ Đang thực hiện — Tuần 1</span></span>
-    </div>
-    <div class="info-row">
-      <span class="info-label">Thời gian</span>
-      <span class="info-value">8 tuần (2026)</span>
-    </div>
-    <div class="info-row">
-      <span class="info-label">Mục tiêu</span>
-      <span class="info-value">Phần mềm nhận diện người & biển số xe qua camera IP — có thể dùng với nhiều hãng camera phổ biến</span>
+  <!-- Tiêu đề tài liệu -->
+  <div class="doc-header">
+    <div class="doc-school">Đại học — Báo cáo tiến độ đồ án</div>
+    <div class="doc-title">BÁO CÁO TIẾN ĐỘ DỰ ÁN</div>
+    <div class="doc-subtitle">CamVision AI — Hệ thống Camera Thông Minh</div>
+    <div class="doc-meta">
+      Sinh viên: <strong>Phan Thành Long</strong> &nbsp;·&nbsp;
+      Cập nhật: <strong id="doc-date"></strong>
     </div>
   </div>
 
-  <!-- Progress -->
-  <div class="progress-wrap">
-    <div class="progress-top">
-      <span class="progress-title">Tiến độ tổng thể</span>
-      <span class="progress-pct">Tuần 1 / 8</span>
+  <!-- 1. Giới thiệu -->
+  <h2>1. Giới thiệu dự án</h2>
+  <p>
+    Dự án xây dựng hệ thống camera thông minh có khả năng <strong>tự động nhận diện khuôn mặt người</strong>
+    và <strong>đọc biển số xe</strong> từ hình ảnh camera. Hệ thống có thể gửi cảnh báo khi phát hiện
+    người lạ hoặc phương tiện không được phép.
+  </p>
+  <p>
+    Hệ thống tương thích với các hãng camera IP phổ biến tại Việt Nam:
+    Hikvision, Ezviz, Imou, Tenda và các camera hỗ trợ chuẩn RTSP.
+  </p>
+
+  <!-- 2. Trạng thái hiện tại -->
+  <h2>2. Trạng thái hiện tại</h2>
+
+  <div class="status-big">
+    <div class="status-label">Trạng thái</div>
+    <div class="status-main">⏳ Đang thực hiện — Tuần 1 / 8</div>
+    <div class="status-sub">Giai đoạn: Chuẩn bị môi trường & kết nối camera thử nghiệm</div>
+  </div>
+
+  <div class="progress-row">
+    <span class="progress-label">Tiến độ tổng thể</span>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" style="width: 8%"></div>
     </div>
-    <div class="bar-bg"><div class="bar-fill" style="width:8%"></div></div>
-    <div class="weeks-dots">
-      <a href="#tuan-1" class="w-dot w-active" title="Tuần 1 — đang làm">1</a>
-      <a href="#tuan-2" class="w-dot w-upcoming" title="Tuần 2">2</a>
-      <a href="#tuan-3" class="w-dot w-upcoming" title="Tuần 3">3</a>
-      <a href="#tuan-4" class="w-dot w-upcoming" title="Tuần 4">4</a>
-      <a href="#tuan-5" class="w-dot w-upcoming" title="Tuần 5">5</a>
-      <a href="#tuan-6" class="w-dot w-upcoming" title="Tuần 6">6</a>
-      <a href="#tuan-7" class="w-dot w-upcoming" title="Tuần 7">7</a>
-      <a href="#tuan-8" class="w-dot w-upcoming" title="Tuần 8">8</a>
+    <span class="progress-label">8%</span>
+  </div>
+
+  <!-- 3. Tài liệu -->
+  <h2>3. Tài liệu tham khảo</h2>
+
+  <div class="link-row">
+    <span>💻</span>
+    <div>
+      <strong>Mã nguồn chương trình: </strong>
+      <a href="https://github.com/Longphanxdragon/cameraAI" target="_blank">github.com/Longphanxdragon/cameraAI</a>
+      <div class="link-note">Toàn bộ code của dự án</div>
     </div>
   </div>
 
-  <!-- Tài liệu -->
-  <div class="section-label">Tài liệu tham khảo</div>
-
-  <a class="link-card" href="https://github.com/Longphanxdragon/cameraAI" target="_blank">
-    <span class="link-icon">💻</span>
-    <div class="link-body">
-      <div class="link-name">Mã nguồn (GitHub)</div>
-      <div class="link-desc">Toàn bộ code của dự án</div>
-    </div>
-    <span class="link-arrow">→</span>
-  </a>
-
-  <a class="link-card" href="https://docs.google.com/document/d/1QizFPeG3Yv3PWg5sWgW4ROfTvh5EX5c3ktHnCbKF8AQ/edit?hl=vi&tab=t.0" target="_blank">
-    <span class="link-icon">📄</span>
-    <div class="link-body">
-      <div class="link-name">Tài liệu mô tả dự án</div>
-      <div class="link-desc">Yêu cầu, tính năng, mục tiêu hệ thống</div>
-    </div>
-    <span class="link-arrow">→</span>
-  </a>
-
-  <a class="link-card" href="https://drive.google.com/file/d/1-2hSz85l5MbNxWkwCeTjR7SRE3eh420r/view?usp=sharing" target="_blank">
-    <span class="link-icon">🗺️</span>
-    <div class="link-body">
-      <div class="link-name">Sơ đồ thiết kế hệ thống</div>
-      <div class="link-desc">Các thành phần và cách chúng kết nối với nhau</div>
-    </div>
-    <span class="link-arrow">→</span>
-  </a>
-
-  <div class="link-soon"><span>🖥️</span> Giao diện trực quan (Figma) — sẽ có ở Tuần 6</div>
-  <div class="link-soon"><span>🌐</span> Bản demo trực tuyến — sẽ có ở Tuần 8</div>
-
-  <!-- Kế hoạch -->
-  <div class="section-label">Kế hoạch & tiến độ từng tuần</div>
-
-  <!-- T1 -->
-  <div class="week-card" id="tuan-1">
-    <div class="week-top">
-      <span class="week-num" style="background:#dbeafe;color:#1e40af">Tuần 1</span>
-      <div class="week-info">
-        <div class="week-name">Chuẩn bị môi trường & kết nối camera</div>
-        <div class="week-desc">Cài đặt công cụ, kết nối thử với camera</div>
-      </div>
-      <span class="week-status badge-yellow badge">⏳ Đang làm</span>
-    </div>
-    <div class="week-body">
-      <div class="task-list">
-        <div class="task-row"><span class="task-icon">✅</span><span class="task-done">Đọc hiểu toàn bộ dự án nền tảng</span></div>
-        <div class="task-row"><span class="task-icon">⬜</span><span>Cài đặt các thư viện AI cần thiết</span></div>
-        <div class="task-row"><span class="task-icon">⬜</span><span>Kết nối thử với camera, đọc được hình ảnh từ camera</span></div>
-        <div class="task-row"><span class="task-icon">⬜</span><span>Lưu được ảnh chụp từ camera ra file</span></div>
-      </div>
-      <div class="result-box pending">⏳ Kết quả tuần này: Kết nối thành công với camera, chụp được ảnh mẫu</div>
+  <div class="link-row">
+    <span>📄</span>
+    <div>
+      <strong>Tài liệu mô tả dự án: </strong>
+      <a href="https://docs.google.com/document/d/1QizFPeG3Yv3PWg5sWgW4ROfTvh5EX5c3ktHnCbKF8AQ/edit?hl=vi&tab=t.0" target="_blank">Mở Google Docs</a>
+      <div class="link-note">Yêu cầu, tính năng, mục tiêu của hệ thống</div>
     </div>
   </div>
 
-  <!-- T2 -->
-  <div class="week-card" id="tuan-2">
-    <div class="week-top">
-      <span class="week-num" style="background:#f3e8ff;color:#6b21a8">Tuần 2</span>
-      <div class="week-info">
-        <div class="week-name">Nhận diện khuôn mặt</div>
-        <div class="week-desc">Hệ thống nhận ra ai đang đứng trước camera</div>
-      </div>
-      <span class="week-status badge-gray badge">Chưa bắt đầu</span>
-    </div>
-    <div class="week-body">
-      <div class="task-list">
-        <div class="task-row"><span class="task-icon">⬜</span><span>Xây module nhận diện khuôn mặt</span></div>
-        <div class="task-row"><span class="task-icon">⬜</span><span>Thêm ảnh của người cần nhận diện vào hệ thống</span></div>
-        <div class="task-row"><span class="task-icon">⬜</span><span>Test: cho người đứng trước camera — hệ thống nhận ra tên</span></div>
-      </div>
-      <div class="result-box pending">⏳ Kết quả tuần này: Nhận diện đúng tên người trong ảnh tĩnh</div>
+  <div class="link-row">
+    <span>🗺️</span>
+    <div>
+      <strong>Sơ đồ thiết kế hệ thống: </strong>
+      <a href="https://drive.google.com/file/d/1-2hSz85l5MbNxWkwCeTjR7SRE3eh420r/view?usp=sharing" target="_blank">Mở Google Drive</a>
+      <div class="link-note">Sơ đồ các thành phần và cách chúng liên kết</div>
     </div>
   </div>
 
-  <!-- T3 -->
-  <div class="week-card" id="tuan-3">
-    <div class="week-top">
-      <span class="week-num" style="background:#fee2e2;color:#991b1b">Tuần 3</span>
-      <div class="week-info">
-        <div class="week-name">Đọc biển số xe</div>
-        <div class="week-desc">Hệ thống phát hiện và đọc được biển số xe trong ảnh</div>
-      </div>
-      <span class="week-status badge-gray badge">Chưa bắt đầu</span>
-    </div>
-    <div class="week-body">
-      <div class="task-list">
-        <div class="task-row"><span class="task-icon">⬜</span><span>Xây module phát hiện biển số xe bằng AI</span></div>
-        <div class="task-row"><span class="task-icon">⬜</span><span>Đọc chữ số trên biển số (định dạng Việt Nam)</span></div>
-        <div class="task-row"><span class="task-icon">⬜</span><span>Test với ảnh biển số thực tế</span></div>
-      </div>
-      <div class="result-box pending">⏳ Kết quả tuần này: Đọc đúng biển số xe trong ảnh rõ nét</div>
+  <div class="link-row">
+    <span>🖥️</span>
+    <div>
+      <span class="link-soon">Giao diện hệ thống (Figma) — sẽ bổ sung ở Tuần 6</span>
     </div>
   </div>
 
-  <!-- T4 -->
-  <div class="week-card" id="tuan-4">
-    <div class="week-top">
-      <span class="week-num" style="background:#d1fae5;color:#065f46">Tuần 4</span>
-      <div class="week-info">
-        <div class="week-name">Quản lý nhiều camera cùng lúc</div>
-        <div class="week-desc">Hệ thống có thể kết nối và quản lý nhiều camera từ nhiều hãng khác nhau</div>
-      </div>
-      <span class="week-status badge-gray badge">Chưa bắt đầu</span>
-    </div>
-    <div class="week-body">
-      <div class="task-list">
-        <div class="task-row"><span class="task-icon">⬜</span><span>Hỗ trợ các hãng camera phổ biến: Hikvision, Ezviz, Imou, Tenda</span></div>
-        <div class="task-row"><span class="task-icon">⬜</span><span>Tự động kết nối lại khi camera bị mất tín hiệu</span></div>
-        <div class="task-row"><span class="task-icon">⬜</span><span>Thêm/xoá camera qua giao diện quản lý</span></div>
-      </div>
-      <div class="result-box pending">⏳ Kết quả tuần này: Quản lý được ít nhất 2 camera từ 2 hãng khác nhau</div>
+  <div class="link-row">
+    <span>🌐</span>
+    <div>
+      <span class="link-soon">Bản demo trực tuyến — sẽ bổ sung ở Tuần 8</span>
     </div>
   </div>
 
-  <!-- T5 -->
-  <div class="week-card" id="tuan-5">
-    <div class="week-top">
-      <span class="week-num" style="background:#d1fae5;color:#065f46">Tuần 5</span>
-      <div class="week-info">
-        <div class="week-name">Phân tích hình ảnh theo thời gian thực</div>
-        <div class="week-desc">AI chạy liên tục, phân tích từng khung hình từ camera ngay khi có</div>
+  <!-- 4. Kế hoạch -->
+  <h2>4. Kế hoạch 8 tuần</h2>
+
+  <table class="plan-table">
+    <thead>
+      <tr>
+        <th style="width:70px">Tuần</th>
+        <th>Nội dung công việc</th>
+        <th style="width:80px">Kết quả cần đạt</th>
+        <th style="width:100px">Trạng thái</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="active-row">
+        <td style="text-align:center"><strong>1</strong></td>
+        <td>Cài đặt công cụ, kết nối thử với camera thực tế</td>
+        <td>Chụp được ảnh từ camera</td>
+        <td><span class="tag tag-active">⏳ Đang làm</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center">2</td>
+        <td>Xây dựng tính năng nhận diện khuôn mặt</td>
+        <td>Nhận diện đúng ≥ 80%</td>
+        <td><span class="tag tag-upcoming">Chưa bắt đầu</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center">3</td>
+        <td>Xây dựng tính năng đọc biển số xe</td>
+        <td>Đọc đúng ≥ 70%</td>
+        <td><span class="tag tag-upcoming">Chưa bắt đầu</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center">4</td>
+        <td>Hỗ trợ nhiều camera từ nhiều hãng khác nhau</td>
+        <td>≥ 2 hãng hoạt động</td>
+        <td><span class="tag tag-upcoming">Chưa bắt đầu</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center">5</td>
+        <td>Phân tích hình ảnh liên tục theo thời gian thực</td>
+        <td>Kết quả hiện ngay lập tức</td>
+        <td><span class="tag tag-upcoming">Chưa bắt đầu</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center">6</td>
+        <td>Xây dựng giao diện xem camera và kết quả nhận diện</td>
+        <td>Giao diện hoàn chỉnh</td>
+        <td><span class="tag tag-upcoming">Chưa bắt đầu</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center">7</td>
+        <td>Tính năng cảnh báo email và báo cáo thống kê</td>
+        <td>Email cảnh báo hoạt động</td>
+        <td><span class="tag tag-upcoming">Chưa bắt đầu</span></td>
+      </tr>
+      <tr>
+        <td style="text-align:center">8</td>
+        <td>Kiểm thử toàn diện, hoàn thiện tài liệu, quay video demo</td>
+        <td>Demo hoàn chỉnh</td>
+        <td><span class="tag tag-upcoming">Chưa bắt đầu</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 5. Chi tiết tuần hiện tại -->
+  <h2>5. Chi tiết tuần đang thực hiện (Tuần 1)</h2>
+
+  <div class="current-week-box">
+    <div class="cw-header">Tuần 1 — Chuẩn bị môi trường & kết nối camera thử nghiệm</div>
+    <div class="cw-body">
+
+      <div class="task">
+        <span>✅</span>
+        <span class="task-done-text">Đọc hiểu toàn bộ dự án nền tảng, xác định hướng phát triển</span>
       </div>
-      <span class="week-status badge-gray badge">Chưa bắt đầu</span>
-    </div>
-    <div class="week-body">
-      <div class="task-list">
-        <div class="task-row"><span class="task-icon">⬜</span><span>Ghép AI vào luồng video từ camera — chạy real-time</span></div>
-        <div class="task-row"><span class="task-icon">⬜</span><span>Gửi kết quả nhận diện về ứng dụng ngay lập tức</span></div>
-        <div class="task-row"><span class="task-icon">⬜</span><span>Lưu lại lịch sử các lần phát hiện</span></div>
+      <div class="task">
+        <span>⬜</span>
+        <span>Cài đặt các thư viện AI cần thiết cho nhận diện khuôn mặt và biển số</span>
       </div>
-      <div class="result-box pending">⏳ Kết quả tuần này: Camera chạy liên tục, kết quả hiển thị ngay khi phát hiện</div>
+      <div class="task">
+        <span>⬜</span>
+        <span>Kết nối thử với camera, xác nhận đọc được hình ảnh từ camera</span>
+      </div>
+      <div class="task">
+        <span>⬜</span>
+        <span>Lưu được ảnh chụp từ camera ra file để kiểm tra chất lượng hình ảnh</span>
+      </div>
+
+      <div class="result-box pending">
+        <strong>Kết quả cần đạt cuối tuần này:</strong>
+        Kết nối thành công với camera, chương trình đọc và lưu được ảnh mẫu từ camera
+      </div>
     </div>
   </div>
 
-  <!-- T6 -->
-  <div class="week-card" id="tuan-6">
-    <div class="week-top">
-      <span class="week-num" style="background:#ffedd5;color:#9a3412">Tuần 6</span>
-      <div class="week-info">
-        <div class="week-name">Giao diện xem camera trực tiếp</div>
-        <div class="week-desc">Màn hình hiển thị camera + tên người / biển số được khoanh vùng</div>
-      </div>
-      <span class="week-status badge-gray badge">Chưa bắt đầu</span>
-    </div>
-    <div class="week-body">
-      <div class="task-list">
-        <div class="task-row"><span class="task-icon">⬜</span><span>Giao diện xem hình ảnh camera trực tiếp trên trình duyệt</span></div>
-        <div class="task-row"><span class="task-icon">⬜</span><span>Hiển thị khung bao quanh khuôn mặt / biển số kèm thông tin</span></div>
-        <div class="task-row"><span class="task-icon">⬜</span><span>Danh sách sự kiện đã phát hiện trong ngày</span></div>
-      </div>
-      <div class="result-box pending">⏳ Kết quả tuần này: Mở trình duyệt lên thấy camera live với kết quả nhận diện</div>
-    </div>
+  <!-- Chú thích -->
+  <div class="footnote">
+    Tài liệu này được cập nhật tự động mỗi khi có tiến độ mới. &nbsp;·&nbsp;
+    Nhấn vào link tài liệu ở mục 3 để xem chi tiết.
   </div>
 
-  <!-- T7 -->
-  <div class="week-card" id="tuan-7">
-    <div class="week-top">
-      <span class="week-num" style="background:#f3e8ff;color:#6b21a8">Tuần 7</span>
-      <div class="week-info">
-        <div class="week-name">Cảnh báo & Báo cáo</div>
-        <div class="week-desc">Gửi thông báo khi phát hiện người lạ hoặc xe không được phép</div>
-      </div>
-      <span class="week-status badge-gray badge">Chưa bắt đầu</span>
-    </div>
-    <div class="week-body">
-      <div class="task-list">
-        <div class="task-row"><span class="task-icon">⬜</span><span>Gửi email cảnh báo khi phát hiện người lạ / biển số lạ</span></div>
-        <div class="task-row"><span class="task-icon">⬜</span><span>Danh sách người/xe được phép (whitelist)</span></div>
-        <div class="task-row"><span class="task-icon">⬜</span><span>Biểu đồ thống kê số lần phát hiện theo giờ/ngày</span></div>
-        <div class="task-row"><span class="task-icon">⬜</span><span>Xuất báo cáo ra file Excel</span></div>
-      </div>
-      <div class="result-box pending">⏳ Kết quả tuần này: Nhận được email khi có người lạ xuất hiện trước camera</div>
-    </div>
-  </div>
-
-  <!-- T8 -->
-  <div class="week-card" id="tuan-8">
-    <div class="week-top">
-      <span class="week-num" style="background:#f3f4f6;color:#374151">Tuần 8</span>
-      <div class="week-info">
-        <div class="week-name">Hoàn thiện & Demo</div>
-        <div class="week-desc">Kiểm thử toàn diện, đóng gói, quay video demo</div>
-      </div>
-      <span class="week-status badge-gray badge">Chưa bắt đầu</span>
-    </div>
-    <div class="week-body">
-      <div class="task-list">
-        <div class="task-row"><span class="task-icon">⬜</span><span>Kiểm thử với ít nhất 3 hãng camera khác nhau</span></div>
-        <div class="task-row"><span class="task-icon">⬜</span><span>Chạy thử với 4 camera cùng lúc — đo hiệu năng</span></div>
-        <div class="task-row"><span class="task-icon">⬜</span><span>Quay video demo 3-5 phút toàn bộ tính năng</span></div>
-        <div class="task-row"><span class="task-icon">⬜</span><span>Viết tài liệu hướng dẫn sử dụng</span></div>
-      </div>
-      <div class="result-box pending">⏳ Kết quả tuần này: Hệ thống hoàn chỉnh, có video demo, tài liệu đầy đủ</div>
-    </div>
-  </div>
-
-  <footer>
-    Cập nhật: <span id="fdate"></span> · Phan Thành Long
-  </footer>
 </div>
+
 <script>
-  document.getElementById('fdate').textContent =
-    new Date().toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit',year:'numeric'});
+  document.getElementById('doc-date').textContent =
+    new Date().toLocaleDateString('vi-VN', {day:'2-digit', month:'2-digit', year:'numeric'});
 </script>
 </body>
 </html>
